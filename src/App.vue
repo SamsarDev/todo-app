@@ -1,56 +1,88 @@
 <template>
   <div id="app">
-    <div class="top-background"></div>
+    <background-top></background-top>
+    <switch-button></switch-button>
     <div id="main-space">
-      <div class="title">TODO</div>
-      <div class="input-space card-rounded">
-        <div class="check-space">
-          <div class="check-icon"></div>
-        </div>
-        <label for="txt-new-todo" class="new-todo">
-          <input
-            type="text"
-            id="txt-new-todo"
-            placeholder="Create a new todo..."
-          />
-          <span class="focus-bg"></span>
-        </label>
-      </div>
-      <div class="to-do-list card-rounded"></div>
+      <div class="title">{{ texts.title }}</div>
+      <single-task status="new" :task="texts.newTodo"></single-task>
+      <to-do-list></to-do-list>
       <div class="instructions">Drag and drop to reorder list</div>
-      <div class="space-filters card-rounded"></div>
+      <filters-bar></filters-bar>
     </div>
   </div>
 </template>
 
 <script>
+import BackgroundTop from "@/components/BackgroundTop";
+import SwitchButton from "@/components/SwitchButton";
+import SingleTask from "@/components/SingleTask";
+import ToDoList from "@/components/ToDoList";
+import FiltersBar from "@/components/FiltersBar";
+import { esp } from "@/utils/txtResources.js";
+
 export default {
   name: "App",
+  components: {
+    BackgroundTop,
+    SingleTask,
+    SwitchButton,
+    ToDoList,
+    FiltersBar
+  },
+  data() {
+    return {
+      texts: esp
+    };
+  },
+  methods: {
+    setColorTheme() {
+      const body = document.body;
+
+      body.className = "theme--default";
+    }
+  },
+  created() {
+    this.setColorTheme();
+  }
 };
 </script>
 
 <style lang="scss">
-@import "~styles/variables";
+@import "~styles/theme.scss";
 
 #app {
   height: 100vh;
   width: 100vw;
-  background-color: $background;
-  color: $font-color;
-  .top-background {
-    height: 200px;
-    width: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background-image: url("~img/bg-mobile-light.jpg");
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
+
+  @include themed() {
+    background-color: t("bg-color");
+    color: t("primary");
   }
 }
+
 #main-space {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 90%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+  .title {
+    letter-spacing: 10pt;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    @include themed() {
+      color: t("titles");
+    }
+  }
+}
+
+/* #main-space {
   height: 90%;
   width: 85%;
   position: absolute;
@@ -85,7 +117,7 @@ export default {
         height: 1rem;
         width: 1rem;
         border-radius: 50%;
-        border: $light-dgb 1pt dashed;
+        border: $light-dgb 1pt solid;
       }
     }
     .new-todo {
@@ -106,15 +138,10 @@ export default {
       input {
         appearance: none;
         border: 0;
-        font-family: inherit;
         height: 98%;
         width: 100%;
         font-size: 1rem;
         font-weight: 400;
-        box-shadow: inset 0 -1px 0 rgba(#000, 0.3);
-        &:hover {
-          box-shadow: inset 0 -1px 0 rgba(#000, 0.5);
-        }
         &:focus {
           outline: none;
           box-shadow: inset 0 -2px 0 #0077ff;
@@ -122,6 +149,9 @@ export default {
             transform: scaleX(1);
             transition: all 0.1s ease;
           }
+        }
+        &::placeholder {
+          color: $light-dgb;
         }
       }
     }
@@ -145,5 +175,5 @@ export default {
   border-radius: 0.5rem;
   border: $light-vlg 1pt solid;
   background: $light-card-background;
-}
+} */
 </style>

@@ -1,0 +1,47 @@
+@import "variables.scss";
+
+$themes: (
+  default: (
+    bg-mobile: $bg-mobile-light,
+    bg-desktop: $bg-desktop-light,
+    bg-color: $bg-light,
+    bg-card: $bg-card-light,
+    primary: $primary-light,
+    secondary: $secondary,
+    emphasis: $emphasis,
+    titles: $titles
+  ),
+  dark: (
+    bg-mobile: $bg-mobile-dark,
+    bg-desktop: $bg-desktop-dark,
+    bg-color: $bg-dark,
+    bg-card: $bg-card-dark,
+    primary: $primary-dark,
+    secondary: $secondary,
+    emphasis: $emphasis,
+    titles: $titles
+  ),
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), "#{$key}");
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value,
+          )
+        ) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}

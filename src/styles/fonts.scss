@@ -1,0 +1,9 @@
+@import 'variables.scss';
+
+@import url('https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu');
+
+@mixin google-fonts($family, $sizes) {
+    @import url("https://fonts.googleapis.com/css?family=#{$family}:wght@#{$sizes}");
+}
+
+@include google-fonts("Josefin Sans", $letters-sizes);
